@@ -8,7 +8,7 @@ import yaml
 
 from data.episodic_loader import DatasetRegistry, EpisodicQueryLoader
 from loss import CombinedLoss
-from models.iris_model import IRISModel
+from models.lesa_model import LeSANet
 from training.episodic_trainer import EpisodicTrainer
 
 
@@ -17,8 +17,8 @@ DEFAULT_CONFIG = {
     "images_dir": "/data/cyf/shared_data/mri-pet/CT_PET/DeepPSMA_v1/imagesTr",
     "labels_dir": "/data/cyf/shared_data/mri-pet/CT_PET/DeepPSMA_v1/labelsTr",
     "split_json": "/data/cyf/shared_data/mri-pet/CT_PET/DeepPSMA_v1/psma_split.json",
-    "checkpoint_path": "best_iris_final.pth",
-    "log_path": "log_iris_final.txt",
+    "checkpoint_path": "best_lesanet.pth",
+    "log_path": "log_lesanet.txt",
     "device": "cuda" if torch.cuda.is_available() else "cpu",
     "num_epochs": 100,
     "query_limit": None,
@@ -123,7 +123,7 @@ def build_registry(config):
 
 
 def create_model(config):
-    model = IRISModel(
+    model = LeSANet(
         in_channels=config["in_channels"],
         base_channels=config["base_channels"],
         num_classes=config["num_classes"],
@@ -205,7 +205,7 @@ def run_training(config, resume=None):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Train Iris_final on the PSMA PET/CT dataset.")
+    parser = argparse.ArgumentParser(description="Train LeSANet on a PET/CT lesion segmentation dataset.")
     parser.add_argument("--config", type=str, default=None, help="Optional YAML config override.")
     parser.add_argument("--data-root", type=str, default=None, help="Dataset root.")
     parser.add_argument("--images-dir", type=str, default=None, help="imagesTr path.")
@@ -251,7 +251,7 @@ def main():
         sys.stdout = tee
         sys.stderr = tee
         try:
-            print("Iris_final training")
+            print("LeSANet training")
             print("=" * 60)
             print(yaml.safe_dump(config, sort_keys=False, allow_unicode=True))
             run_training(config, resume=args.resume)

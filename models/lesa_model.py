@@ -183,7 +183,7 @@ class CoarseToFineDecoder3D(nn.Module):
         }
 
 
-class IRISFinalModel(nn.Module):
+class LeSANet(nn.Module):
     def __init__(
         self,
         in_channels: int = 2,
@@ -210,7 +210,7 @@ class IRISFinalModel(nn.Module):
         self.decoder = CoarseToFineDecoder3D(encoder_channels=encoder_channels, num_classes=num_classes)
 
         self.config = {
-            "model_name": "iris_final",
+            "model_name": "lesanet",
             "in_channels": in_channels,
             "base_channels": base_channels,
             "num_classes": num_classes,
@@ -335,6 +335,3 @@ class IRISFinalModel(nn.Module):
             "lesion_prompt_parameters": prompt_params,
             "config": self.config,
         }
-
-
-IRISModel = IRISFinalModel

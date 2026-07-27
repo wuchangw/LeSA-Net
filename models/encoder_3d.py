@@ -1,5 +1,5 @@
 """
-3D UNet Encoder for IRIS Framework
+3D UNet Encoder for LeSANet
 
 This module implements a 3D UNet encoder with:
 - 4 downsampling stages with doubling channels: [32, 64, 128, 256, 512]
