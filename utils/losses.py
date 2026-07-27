@@ -1,7 +1,7 @@
 """
-Loss Functions for IRIS Framework
+Loss Functions for LeSANet
 
-This module implements the loss functions used in IRIS training:
+This module implements the loss functions used in LeSANet training:
 - Dice Loss: For segmentation quality
 - CrossEntropy Loss: For classification
 - Combined Loss: Weighted combination of both

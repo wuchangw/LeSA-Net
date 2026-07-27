@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-from evaluation.psma_metrics import CaseMetrics, compute_case_metrics, format_summary_block, summarize_case_metrics
+from evaluation.metrics import CaseMetrics, compute_case_metrics, format_summary_block, summarize_case_metrics
 from utils.losses import CombinedLoss, dice_score
 
 

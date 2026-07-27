@@ -6,10 +6,10 @@ import torch
 import torch.nn.functional as F
 
 from data.episodic_loader import DatasetRegistry, EpisodicQueryLoader
-from evaluation.psma_metrics import CaseMetrics, compute_case_metrics, format_case_table, format_summary_block, summarize_case_metrics
+from evaluation.metrics import CaseMetrics, compute_case_metrics, format_case_table, format_summary_block, summarize_case_metrics
 from loss import CombinedLoss
-from models.iris_model import IRISModel
-from train_final import DEFAULT_CONFIG
+from models.lesa_model import LeSANet
+from train import DEFAULT_CONFIG
 
 
 def ensure_utf8_console():
@@ -46,14 +46,14 @@ def compute_pet_descriptor(images: torch.Tensor, percentile: float, grid_size):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Validate a trained Iris_final checkpoint.")
-    parser.add_argument("--checkpoint", type=str, default="best_iris_final.pth", help="Checkpoint path.")
+    parser = argparse.ArgumentParser(description="Validate a trained LeSANet checkpoint.")
+    parser.add_argument("--checkpoint", type=str, default="best_lesanet.pth", help="Checkpoint path.")
     parser.add_argument("--data-root", type=str, default=DEFAULT_CONFIG["data_root"], help="Dataset root.")
     parser.add_argument("--images-dir", type=str, default=DEFAULT_CONFIG["images_dir"], help="imagesTr path.")
     parser.add_argument("--labels-dir", type=str, default=DEFAULT_CONFIG["labels_dir"], help="labelsTr path.")
     parser.add_argument("--split-json", type=str, default=DEFAULT_CONFIG["split_json"], help="Split json path.")
     parser.add_argument("--device", type=str, default=DEFAULT_CONFIG["device"], help="cuda or cpu.")
-    parser.add_argument("--output", type=str, default="test_iris_final.txt", help="Metrics report output.")
+    parser.add_argument("--output", type=str, default="test_lesanet.txt", help="Metrics report output.")
     return parser.parse_args()
 
 
@@ -76,7 +76,7 @@ def create_eval_loss(loss_cfg):
 def build_model_from_checkpoint(checkpoint_path: str, device: str):
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
     run_config = checkpoint.get("run_config", DEFAULT_CONFIG)
-    model = IRISModel(
+    model = LeSANet(
         in_channels=run_config["in_channels"],
         base_channels=run_config["base_channels"],
         num_classes=run_config["num_classes"],
@@ -117,7 +117,7 @@ def main():
     retrieval_grid_size = tuple(run_config.get("retrieval_grid_size", [8, 8, 8]))
 
     case_rows = []
-    print("Iris_final validation")
+    print("LeSANet validation")
     print("=" * 60)
     print(registry.describe())
     with torch.no_grad():
